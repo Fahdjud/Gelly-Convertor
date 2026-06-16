@@ -1,0 +1,12 @@
+
+.login-card {
+    position: center;
+    max-width: 540px;
+}
+
+.login-container {
+    position: relative;
+    z-index: 1;
+    padding: 50px;
+    border-radius: 15px;
+}

@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+
+{% block file %}profile{% endblock %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+<div class="video-background">
+    <video autoplay loop muted>
+        <source src="{{ url_for('static', filename='images/homepage-background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+<div class="container my-5 py-5">
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="history-tab" data-bs-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">History</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="security-tab" data-bs-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Security</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    {% if not user %}
+                    <h5 class="card-title">Profile Information</h5>
+                    <p class="card-text">Sorry no data to display try to re-login.</p>
+                    <a href="{{ url_for('logout_template') }}" class="btn btn-primary">logout</a>
+                    {% else %}
+                    <h5 class="card-title">Profile Information</h5>
+                    <p class="card-text">Welcome, {{ user.username }}! ✨</p>
+                    <div class="row">
+                        <div class="col">Credits</div>
+                        <div class="col">Email: </div>
+                        <div class="col">Account Created Date:</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">{{ user.credit }}</div>
+                        <div class="col" id="email-col">
+                            <span id="email-text">{{ user.email }}</span>
+                            <form id="email-form" method="POST">
+                                <input type="email" id="email-input" name="email" value="{{ user.email }}" title="Email" placeholder="Enter your email">
+                        </div>
+                        <div class="col">{{ user.create_date }}</div>
+                    </div>
+                    <div class="py-5">
+                        <button type="submit" id="save-button" class="btn btn-primary mt-2">Save</button>
+                    </form>
+                        <button id="edit-button" class="btn btn-secondary mt-2">Edit</button>
+                    </div>
+                    <script>
+                        document.getElementById('edit-button').addEventListener('click', function() {
+                            document.getElementById('email-text').style.display = 'none';
+                            document.getElementById('email-form').style.display = 'block';
+                            document.getElementById('edit-button').style.display = 'none';
+                            document.getElementById('save-button').style.display = 'inline-block';
+                        });
+                    </script>
+                    {% endif %}
+                </div>
+                <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                    <h5 class="card-title">History</h5>
+                    <p class="card-text">Your history content goes here.</p>
+                    <div class="row">
+                        <div class="col">Date</div>
+                        <div class="col">Action</div>
+                        <div class="col">Details</div>
+                    </div>
+                    {% if history %}
+                    {% for item in history %}
+                    <div class="row">
+                        <div class="col border border-black">{{ item.timestamp }}</div>
+                        <div class="col border border-black">{{ item.credits_used }}</div>
+                        <div class="col border border-black">{{ item.conversion_type }}</div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>No history to display</p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                    <h5 class="card-title">Security Settings</h5>
+                    <div class="row">
+                        <div class="col py-5">
+                            <button id="change-password-button" name="change_passowrd" class="btn btn-warning">Change Password</button>
+                        </div>
+                        <div class="col py-5">
+                            <button id="delete-account-button" name="delete_account" class="btn btn-danger">Delete Account</button>
+                        </div>
+                    </div>
+
+                    <!-- Change Password Modal -->
+                    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" name="change_password" id="changePasswordModalLabel">Change Password</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="change-password-form" class="needs-validation" method="POST" novalidate>
+                                        <div class="mb-3">
+                                            <label for="old-password" class="form-label">Old Password</label>
+                                            <input type="password" name="Old_password" class="form-control" id="old-password" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="new-password" name="new_password" class="form-label">New Password</label>
+                                            <input type="password" name="New_password" class="form-control" id="new-password" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirmation" name="confirmation" class="form-label">Confirm Password</label>
+                                            <input type="password" name="confirmation" class="form-control" id="confirmation" required>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" id="save-password-button">Save changes</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Account Modal -->
+                    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="delete-account-form" method="POST">
+                                        <div class="mb-3">
+                                            <label for="account-password" class="form-label">Password</label>
+                                            <input type="password" name="delete_account" class="form-control" id="account-password" required>
+                                        </div>
+                                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger" id="confirm-delete-button">Delete Account</button>
+                                   </form>
+                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.getElementById('change-password-button').addEventListener('click', function() {
+                            var changePasswordModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+                            changePasswordModal.show();
+                        });
+
+                        document.getElementById('delete-account-button').addEventListener('click', function() {
+                            var deleteAccountModal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
+                            deleteAccountModal.show();
+                        });
+
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

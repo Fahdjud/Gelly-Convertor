@@ -1,0 +1,10 @@
+flask
+flask-session
+flask-sqlalchemy
+flask-migrate
+pytz
+requests
+sqlalchemy
+werkzeug
+moviepy
+pillow

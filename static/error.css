@@ -1,0 +1,13 @@
+.error-gelly {
+    width: 100px; /* Default width for mobile */
+    height: 100px; /* Default height for mobile */
+    display: inline-block; /* Ensures the image is treated as an inline element */
+    vertical-align: middle; /* Aligns the image vertically in the middle */
+}
+
+@media (min-width: 768px) {
+    .error-gelly {
+        width: 200px; /* Adjust the width for laptops */
+        height: 200px; /* Adjust the height for laptops */
+    }
+}

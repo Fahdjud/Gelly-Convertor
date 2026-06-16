@@ -1,0 +1,14 @@
+
+.login-container {
+    position: relative;
+    z-index: 1;
+    padding: 50px;
+    border-radius: 15px;
+    max-width: 540px;
+}
+#email-form {
+    display: none;
+}
+#save-button {
+    display: none;
+}

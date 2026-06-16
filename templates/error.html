@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block file %}error{% endblock %}
+
+{% block title %}
+    Not Found
+{% endblock %}
+
+{% block main %}
+<div class="container text-center my-5 py-5">
+    <img src="{{ url_for('static', filename='icons/error-gelly.svg') }}" class="error-gelly" alt="sad gelly">
+    <p class="h1">404 - Page Not Found</p>
+    <p class="h3">The page you are looking for does not exist</p>
+    <div class="py-3">
+      <a href="{{ url_for('index') }}" class="btn btn-light px-5 py-2"><strong>Return home</strong></a>
+  </div>
+  </div>
+{% endblock %}
